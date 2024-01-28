@@ -2,7 +2,7 @@
 
 This repository contains some of my personal dotfiles, feel free to inspire yourself to build your own setup from theses files.
 
-*Warning*: Use at your own risk!
+**Warning**: Use at your own risk!
 
 
 ## Contents

@@ -1,7 +1,7 @@
 # exclude everything
-*/
+/*
 
 # add folders
-!nvim/**
-!fish/**
-!tmux/**
+!/nvim/
+!/fish/
+!/tmux/

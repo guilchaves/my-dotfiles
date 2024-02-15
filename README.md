@@ -10,6 +10,7 @@ This repository contains some of my personal dotfiles, feel free to inspire your
 - vim (Neovim) config
 - git config
 - fish config
+- Tmux
 
 ## Neovim setup
 
@@ -32,3 +33,7 @@ This repository contains some of my personal dotfiles, feel free to inspire your
 - [z for fish](https://github.com/jethrokuan/z) - Directory jumping
 - [fzf](https://github.com/PatrickF1/fzf.fish) - Interactive filtering
 
+### Tmux
+
+- add .tmux.conf on ~/
+- neovim colorscheme on tmux fixed based on this [article](https://www.cyfyifanchen.com/blog/neovim-true-color)

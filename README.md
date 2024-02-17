@@ -1,8 +1,8 @@
-# My Dotfiles
+# Dotfiles
 
-This repository contains some of my personal dotfiles, feel free to inspire yourself to build your own setup from theses files.
+This repository contains some of my personal dotfiles. Feel free to use them as inspiration to build your own setup from these files.
 
-**Warning**: Use at your own risk!
+**Warning**: Use at your own risk! Make sure to always backup your current config files.
 
 
 ## Contents
@@ -10,7 +10,7 @@ This repository contains some of my personal dotfiles, feel free to inspire your
 - vim (Neovim) config
 - git config
 - fish config
-- Tmux
+- tmux
 
 ## Neovim setup
 

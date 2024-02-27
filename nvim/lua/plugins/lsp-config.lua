@@ -17,6 +17,7 @@ return {
                     "elixirls",
                     "tsserver",
                     "htmx",
+                    "templ",
                     "gopls"
                 },
             })
@@ -38,8 +39,12 @@ return {
             })
             lspconfig.elixirls.setup({
                 capabilities = capabilities,
+                cmd = {vim.fn.expand("~/.bin/elixir-ls/language_server.sh")};
             })
             lspconfig.tailwindcss.setup({
+                capabilities = capabilities,
+            })
+            lspconfig.templ.setup({
                 capabilities = capabilities,
             })
             lspconfig.htmx.setup({

@@ -12,15 +12,15 @@ return {
 				ensure_installed = {
 					"lua_ls",
 					"rust_analyzer",
-					"tsserver",
 					"tailwindcss",
 					"elixirls",
 					"tsserver",
 					"htmx",
 					"templ",
 					"gopls",
-                    "eslint",
-                    "emmet_language_server"
+					"eslint",
+					"emmet_language_server",
+					"angularls",
 				},
 			})
 		end,
@@ -30,13 +30,24 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
+
+			local _border = "single"
+
+			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+				border = _border,
+			})
+
+			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+				border = _border,
+			})
+
+			vim.diagnostic.config({
+				float = { border = _border },
+			})
 			lspconfig.lua_ls.setup({
 				capabilities = capabilities,
 			})
 			lspconfig.rust_analyzer.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.tsserver.setup({
 				capabilities = capabilities,
 			})
 			lspconfig.elixirls.setup({
@@ -56,17 +67,66 @@ return {
 					"templ",
 				},
 			})
+			lspconfig.angularls.setup({
+				capabilities = capabilities,
+				cmd = {
+					"ngserver",
+					"--stdio",
+					"--tsProbeLocations",
+					project_library_path,
+					"--ngProbeLocations",
+					project_library_path,
+				},
+				filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx" },
+			})
+
 			lspconfig.tsserver.setup({
 				capabilities = capabilities,
 				filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
 				cmd = { "typescript-language-server", "--stdio" },
+				keys = {
+					{
+						"<leader>co",
+						function()
+							vim.lsp.buf.code_action({
+								apply = true,
+								context = {
+									only = { "source.organizeImports.ts" },
+									diagnostics = {},
+								},
+							})
+						end,
+						desc = "Organize Imports",
+					},
+					{
+						"<leader>cR",
+						function()
+							vim.lsp.buf.code_action({
+								apply = true,
+								context = {
+									only = { "source.removeUnused.ts" },
+									diagnostics = {},
+								},
+							})
+						end,
+						desc = "Remove Unused Imports",
+					},
+				},
 			})
 			lspconfig.gopls.setup({
 				capabilities = capabilities,
 			})
-            lspconfig.emmet_language_server.setup({
-                filetypes = {"css", "html", "javascript", "javascriptreact", "typescript", "typescriptreact", "typescript.tsx"}
-            })
+			lspconfig.emmet_language_server.setup({
+				filetypes = {
+					"css",
+					"html",
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"typescript.tsx",
+				},
+			})
 
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})

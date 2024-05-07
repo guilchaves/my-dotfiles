@@ -1,3 +1,8 @@
+local keymap = vim.keymap
+local diagnostic = vim.diagnostic
+local lsp = vim.lsp
+local opts = { noremap = true, silent = true }
+
 return {
 	{
 		"williamboman/mason.nvim",
@@ -30,6 +35,7 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
+			local util = require("lspconfig/util")
 
 			local _border = "single"
 
@@ -84,6 +90,11 @@ return {
 				capabilities = capabilities,
 				filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
 				cmd = { "typescript-language-server", "--stdio" },
+				settings = {
+					completions = {
+						completeFunctionCalls = true,
+					},
+				},
 				keys = {
 					{
 						"<leader>co",
@@ -115,6 +126,23 @@ return {
 			})
 			lspconfig.gopls.setup({
 				capabilities = capabilities,
+				cmd = { "gopls" },
+				filetypes = {
+					"go",
+					"gomod",
+					"gowork",
+					"gotmpl",
+				},
+				root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+				settings = {
+					gopls = {
+						completeUnimported = true,
+						usePlaceholders = true,
+						analyses = {
+							unusedparams = true,
+						},
+					},
+				},
 			})
 			lspconfig.emmet_language_server.setup({
 				filetypes = {
@@ -125,16 +153,16 @@ return {
 					"typescript",
 					"typescriptreact",
 					"typescript.tsx",
+					"vue",
 				},
 			})
 
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-			vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
-			vim.keymap.set("n", "<leader>sd", vim.diagnostic.open_float, opts)
-			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
-			vim.keymap.set({ "i", "n" }, "<C-s>", vim.lsp.buf.signature_help, opts)
-			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+			keymap.set("n", "K", lsp.buf.hover, {})
+			keymap.set("n", "gd", lsp.buf.definition, {})
+			keymap.set("n", "<leader>gr", lsp.buf.references, {})
+			keymap.set({ "n", "v" }, "<leader>ca", lsp.buf.code_action, {})
+			keymap.set({ "i", "n" }, "<C-s>", lsp.buf.signature_help, opts)
+			keymap.set("n", "<leader>rn", lsp.buf.rename, opts)
 		end,
 	},
 }
